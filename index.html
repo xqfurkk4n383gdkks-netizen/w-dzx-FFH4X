@@ -23,7 +23,7 @@
             position: relative;
         }
 
-        /* Kırmızı ve Mor Hareketli Ağ Canvas Alanı */
+        /* Yoğunlaştırılmış Kırmızı ve Mor Hareketli Ağ Canvas Alanı */
         #webCanvas {
             position: absolute;
             top: 0;
@@ -154,6 +154,7 @@
 </head>
 <body>
 
+    <!-- Yoğunlaştırılmış Kırmızı ve Mor Hareketli Ağ Efekti -->
     <canvas id="webCanvas"></canvas>
 
     <div class="container">
@@ -221,7 +222,7 @@
             }, 1800);
         }
 
-        // Kırmızı ve Mor Karışık Dinamik Ağ Animasyon Motoru
+        // Optimize Edilmiş Yoğun Ağ Animasyon Motoru
         const canvas = document.getElementById('webCanvas');
         const ctx = canvas.getContext('2d');
 
@@ -233,15 +234,16 @@
         window.addEventListener('resize', resizeCanvas);
 
         let particles = [];
-        const particleCount = 45;
+        // Performansı düşürmeden ağı artırmak için ideal sayıya ayarlandı
+        const particleCount = 85;
 
         for (let i = 0; i < particleCount; i++) {
             particles.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 1.2,
-                vy: (Math.random() - 0.5) * 1.2,
-                radius: Math.random() * 2 + 1,
+                vx: (Math.random() - 0.5) * 1.5,
+                vy: (Math.random() - 0.5) * 1.5,
+                radius: Math.random() * 2 + 1.2,
                 color: Math.random() > 0.5 ? '#ff0033' : '#9900ff'
             });
         }
@@ -260,7 +262,7 @@
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
                 ctx.fillStyle = p.color;
-                ctx.shadowBlur = 10;
+                ctx.shadowBlur = 8;
                 ctx.shadowColor = p.color;
                 ctx.fill();
 
@@ -268,21 +270,21 @@
                     let p2 = particles[j];
                     let distance = Math.hypot(p.x - p2.x, p.y - p2.y);
 
-                    if (distance < 130) {
+                    // Bağlantı mesafesi artırılarak ağların sıklaşması sağlandı
+                    if (distance < 110) {
                         ctx.beginPath();
                         ctx.moveTo(p.x, p.y);
                         ctx.lineTo(p2.x, p2.y);
-                        let alpha = (1 - (distance / 130)) * 0.5;
+                        let alpha = (1 - (distance / 110)) * 0.45;
                         
-                        // Çizgi rengini kırmızı ile mor arasında harmanla
                         ctx.strokeStyle = p.color === '#ff0033' && p2.color === '#ff0033' 
                             ? `rgba(255, 0, 51, ${alpha})` 
                             : (p.color === '#9900ff' && p2.color === '#9900ff' 
                                 ? `rgba(153, 0, 255, ${alpha})` 
                                 : `rgba(204, 0, 128, ${alpha})`);
 
-                        ctx.lineWidth = 0.8;
-                        ctx.shadowBlur = 6;
+                        ctx.lineWidth = 0.7;
+                        ctx.shadowBlur = 4;
                         ctx.shadowColor = "#9900ff";
                         ctx.stroke();
                     }
@@ -297,4 +299,3 @@
 
 </body>
 </html>
-
