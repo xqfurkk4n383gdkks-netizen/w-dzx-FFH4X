@@ -23,7 +23,6 @@
             position: relative;
         }
 
-        /* Optimize Edilmiş Ağ Canvas Alanı */
         #webCanvas {
             position: fixed;
             top: 0;
@@ -41,7 +40,85 @@
             z-index: 1;
         }
 
+        /* Key Doğrulama Ekranı */
+        .key-screen {
+            background: rgba(12, 3, 18, 0.95);
+            border: 2px solid #9900ff;
+            border-radius: 20px;
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: 0 0 35px rgba(153, 0, 255, 0.5), 0 0 15px rgba(255, 0, 51, 0.4);
+            backdrop-filter: blur(8px);
+        }
+
+        .key-title {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: #ffffff;
+            margin-bottom: 8px;
+            text-shadow: 0 0 12px rgba(255, 0, 51, 0.9), 0 0 20px rgba(153, 0, 255, 0.8);
+        }
+
+        .key-subtitle {
+            font-size: 11px;
+            color: #cc66ff;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        .key-input {
+            width: 100%;
+            background: rgba(20, 5, 30, 0.85);
+            border: 1px solid rgba(153, 0, 255, 0.5);
+            border-radius: 10px;
+            padding: 12px;
+            color: #ffffff;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 12px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .key-input:focus {
+            border-color: #ff0033;
+            box-shadow: 0 0 10px rgba(255, 0, 51, 0.4);
+        }
+
+        .key-btn {
+            background: linear-gradient(135deg, #ff0033, #9900ff);
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(153, 0, 255, 0.4);
+            transition: all 0.2s ease;
+            margin-bottom: 15px;
+        }
+
+        .tiktok-link {
+            display: block;
+            font-size: 12px;
+            color: #ff80bf;
+            text-decoration: none;
+            margin-top: 10px;
+            transition: opacity 0.2s;
+        }
+
+        .tiktok-link:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        /* Asıl Panel Ekranı (Başlangıçta gizli) */
         .panel-card {
+            display: none;
             background: rgba(12, 3, 18, 0.88);
             border: 2px solid #9900ff;
             border-radius: 20px;
@@ -150,15 +227,30 @@
             min-height: 18px;
             text-shadow: 0 0 5px rgba(153, 0, 255, 0.4);
         }
+
+        .error-msg {
+            color: #ff3333;
+            font-size: 12px;
+            margin-top: 5px;
+            min-height: 15px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Kırmızı ve Mor Hareketli Ağ Efekti -->
     <canvas id="webCanvas"></canvas>
 
     <div class="container">
-        <div class="panel-card">
+        <div class="key-screen" id="keyScreen">
+            <div class="key-title">WEDZX PANEL</div>
+            <div class="key-subtitle">Key Doğrulama</div>
+            <input type="text" id="keyInput" class="key-input" placeholder="Key giriniz...">
+            <button class="key-btn" onclick="checkKey()">GİRİŞ YAP</button>
+            <div class="error-msg" id="errorMsg"></div>
+            <a href="https://www.tiktok.com/@wedzx_" target="_blank" class="tiktok-link">Key Almak İçin Tıkla: <b>wedzx_</b> TikTok</a>
+        </div>
+
+        <div class="panel-card" id="panelCard">
             <div class="panel-title">WEDZX</div>
             <div class="panel-subtitle">Wedzx Panel Aktif</div>
 
@@ -166,11 +258,14 @@
                 <button class="feature-btn active" onclick="toggleFeature(this, 'AIMBOT')">
                     🎯 AIMBOT: <span class="state">ON</span>
                 </button>
-                <button class="feature-btn active" onclick="toggleFeature(this, 'ESP')">
-                    👁️ ESP: <span class="state">ON</span>
-                </button>
                 <button class="feature-btn active" onclick="toggleFeature(this, 'AIM LOCK')">
                     🔒 AIM LOCK: <span class="state">ON</span>
+                </button>
+                <button class="feature-btn active" onclick="toggleFeature(this, '%75 HS')">
+                    💥 %75 HS: <span class="state">ON</span>
+                </button>
+                <button class="feature-btn active" onclick="toggleFeature(this, 'ESP')">
+                    👁️ ESP: <span class="state">ON</span>
                 </button>
                 <button class="feature-btn active" onclick="toggleFeature(this, 'BACK JUMP')">
                     🦘 BACK JUMP: <span class="state">ON</span>
@@ -198,6 +293,18 @@
     </div>
 
     <script>
+        function checkKey() {
+            const inputVal = document.getElementById('keyInput').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+
+            if (inputVal === "wedzx FFH4X") {
+                document.getElementById('keyScreen').style.display = 'none';
+                document.getElementById('panelCard').style.display = 'block';
+            } else {
+                errorMsg.textContent = "Geçersiz Key! TikTok'tan alınız.";
+            }
+        }
+
         function toggleFeature(button, name) {
             const stateSpan = button.querySelector('.state');
             if (button.classList.contains('active')) {
@@ -222,18 +329,16 @@
             }, 1800);
         }
 
-        // Yüksek Performanslı ve Uyumlu Ağ Motoru
+        // Ağ Animasyon Motoru
         const canvas = document.getElementById('webCanvas');
         const ctx = canvas.getContext('2d');
 
         let particles = [];
-        const particleCount = 40; // Kasma yapmayacak ideal ve yoğun miktar
+        const particleCount = 40;
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            
-            // Ekran boyutu değiştiğinde (masaüstü moduna geçince vb.) parçacıkları ekranda tut
             particles.forEach(p => {
                 if (p.x > canvas.width) p.x = canvas.width - 20;
                 if (p.y > canvas.height) p.y = canvas.height - 20;
